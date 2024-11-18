@@ -8,7 +8,7 @@ WITH raw_customer_details AS (
         phone_number,
         address,
         segment_id,
-        country
+        country_code
     FROM {{ source('travel_project', 'customer_details') }}
 )
 

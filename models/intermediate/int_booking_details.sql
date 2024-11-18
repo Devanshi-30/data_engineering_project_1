@@ -5,13 +5,8 @@
         materialized='incremental',  
         unique_key='booking_id', 
         incremental_strategy='merge', 
-        updated_at='updated_at' , 
-        pre_hook=[
-            "insert into TRAVEL_DB.dbt_dagarwal.model_run_log (model_name, run_time, status) values ('int_booking_details', current_timestamp(), 'start')"
-        ],
-        post_hook=[
-            "insert into TRAVEL_DB.dbt_dagarwal.model_run_log (model_name, run_time, status) values ('int_booking_details', current_timestamp(), 'success')"
-        ] 
+        updated_at='updated_at' 
+       
          
     )
   }}
@@ -24,14 +19,15 @@ with booking as (
         b.customer_id,
         b.destination_type,
         b.booking_date,
+        b.booking_time,
         b.amount_spent,
         b.currency_code,
         b.status,
         b.segment_id,
-        b.country,
+        co.country_name,
         d.description as destination_type_description,
         s.segment_name as customer_segment_name,
-        CURRENT_TIMESTAMP as updated_at, -- or use the actual updated_at field if it exists
+        b.booking_time as updated_at, 
         case 
             when b.currency_code = 'USD' then b.amount_spent
             when b.currency_code = 'EUR' then b.amount_spent / coalesce(dur.exchange_rate_to_usd, 1)
@@ -48,7 +44,7 @@ with booking as (
     left join 
         {{ ref('customer_segments') }} s on b.segment_id = s.segment_id
     left join
-        {{ ref('country_codes') }} co on b.country = co.country_name
+        {{ ref('country_codes') }} co on b.country_code = co.country_code
     left join
         {{ ref('currency_exchange_rates') }} dur on b.currency_code = dur.currency_code
 )
