@@ -11,7 +11,7 @@ with customer_segmentation as (
         c.country_name
     order by 
         c.customer_segment_name,
-        c.country_name,
+        c.country_name
        
 )
 
