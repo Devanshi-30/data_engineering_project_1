@@ -41,9 +41,7 @@ sources:
           - accepted_values:
               column_name: status
               values: ["confirmed", "canceled", "pending"]
-          - relationships:
-              to: ref('customer_details')
-              field: customer_id
+       
 
       - name: customer_details
         description: "Contains customer details like name, contact, and address"
