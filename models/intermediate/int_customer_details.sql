@@ -9,7 +9,6 @@ with customer as (
         c.phone_number,
         c.address,
         c.segment_id,
-        c.country,
         -- Join with customer_segments to add segment name
         s.segment_name as customer_segment_name,
         -- Join with country_codes to add country name
@@ -19,7 +18,7 @@ with customer as (
     left join 
         {{ ref('customer_segments') }} s on c.segment_id = s.segment_id
     left join 
-        {{ ref('country_codes') }} co on c.country = co.country_name
+        {{ ref('country_codes') }} co on c.country_code = co.country_code
 )
 
 select * from customer

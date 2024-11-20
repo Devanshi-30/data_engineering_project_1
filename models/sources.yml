@@ -12,10 +12,12 @@ sources:
             description: "Unique identifier for the booking"
           - name: customer_id
             description: "ID of the customer making the booking"
-          - name: destination_type
-            description: "Type of the destination (city, beach, etc.)"
           - name: booking_date
             description: "The date the booking was made"
+          - name: booking_time
+            description: "The time the booking was made"
+          - name: destination_type
+            description: "Type of the destination (city, beach, etc.)"
           - name: amount_spent
             description: "Total amount spent on the booking"
           - name: currency_code
@@ -24,8 +26,8 @@ sources:
             description: "Status of the booking (confirmed, canceled, etc.)"
           - name: segment_id
             description: "Customer segment ID"
-          - name: country
-            description: "Country where the customer is located"
+          - name: country_code
+            description: "Country code where the customer is located"
         freshness:
           warn_after: { count: 1, period: hour } # Warn if the data is older than 1 hour
           error_after: { count: 24, period: hour } # Error if the data is older than 24 hours
@@ -60,8 +62,8 @@ sources:
             description: "Customer's address"
           - name: segment_id
             description: "Customer segment ID"
-          - name: country
-            description: "Customer's country"
+          - name: country_code
+            description: "Customer's country code"
         freshness:
           warn_after: { count: 1, period: hour } # Warn if the data is older than 1 hour
           error_after: { count: 24, period: hour } # Error if the data is older than 24 hours

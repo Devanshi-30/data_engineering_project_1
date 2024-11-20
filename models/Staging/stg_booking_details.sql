@@ -6,11 +6,12 @@ with raw_booking_details as (
         customer_id,
         destination_type,
         booking_date,
+        booking_time,
         amount_spent,
         currency_code,
         status,
         segment_id,
-        country
+        country_code
     from 
         {{ source('travel_project', 'booking_details') }}
 )

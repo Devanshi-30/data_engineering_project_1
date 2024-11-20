@@ -9,6 +9,10 @@ with customer_segmentation as (
     group by 
         c.customer_segment_name,
         c.country_name
+    order by 
+        c.customer_segment_name,
+        c.country_name
+       
 )
 
 select * from customer_segmentation

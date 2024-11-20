@@ -17,7 +17,6 @@
      phone_number,
      address,
      segment_id,
-     country,
      customer_segment_name,
      country_name,
      CURRENT_TIMESTAMP AS updated_at 
