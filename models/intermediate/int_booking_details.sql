@@ -29,14 +29,14 @@ with booking as (
         b.destination_type,
         d.description as destination_type_description,
         b.booking_date,
-        b.booking_time,
+        b.booking_timestamp,
         b.amount_spent,
         b.currency_code,
         b.status,
         b.segment_id,
         s.segment_name as customer_segment_name,
         co.country_name,
-        b.booking_time as updated_at, 
+        booking_timestamp as updated_at,
         case 
             when b.currency_code = 'EUR' then b.amount_spent / coalesce(dur.exchange_rate_to_usd, 1)
             when b.currency_code = 'CAD' then b.amount_spent / coalesce(dur.exchange_rate_to_usd, 1)

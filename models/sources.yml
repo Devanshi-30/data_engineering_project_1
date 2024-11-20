@@ -14,7 +14,7 @@ sources:
             description: "ID of the customer making the booking"
           - name: booking_date
             description: "The date the booking was made"
-          - name: booking_time
+          - name: BOOKING_TIMESTAMP
             description: "The time the booking was made"
           - name: destination_type
             description: "Type of the destination (city, beach, etc.)"
