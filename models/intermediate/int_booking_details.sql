@@ -2,10 +2,9 @@
 
 {{
     config(
-        materialized='incremental',  
-        unique_key='booking_id', 
-        incremental_strategy='merge', 
-        updated_at='updated_at',
+        materialized='incremental', 
+        unique_keys = 'booking_id' ,
+        incremental_strategy ='merge',
         pre_hook=[
             "insert into TRAVEL_DB.dbt_dagarwal.model_run_log (model_name, run_time, status) values ('int_booking_details', current_timestamp(), 'start')"
         ],
@@ -29,20 +28,18 @@ with booking as (
         b.destination_type,
         d.description as destination_type_description,
         b.booking_date,
-        b.booking_timestamp,
         b.amount_spent,
         b.currency_code,
         b.status,
         b.segment_id,
         s.segment_name as customer_segment_name,
         co.country_name,
-        booking_timestamp as updated_at,
         case 
             when b.currency_code = 'EUR' then b.amount_spent / coalesce(dur.exchange_rate_to_usd, 1)
             when b.currency_code = 'CAD' then b.amount_spent / coalesce(dur.exchange_rate_to_usd, 1)
             when b.currency_code = 'INR' then b.amount_spent / coalesce(dur.exchange_rate_to_usd, 1)
             else b.amount_spent 
-        end as amount_spent_usd,
+        end as amount_spent_usd
     from 
         {{ ref('stg_booking_details') }} b
     left join 
@@ -53,11 +50,19 @@ with booking as (
         {{ ref('country_codes') }} co on b.country_code = co.country_code
     left join
         {{ ref('currency_exchange_rates') }} dur on b.currency_code = dur.currency_code
+    
 )
 
-select * from booking
-{% if is_incremental() %}
-    where updated_at > (select max(updated_at) from {{ this }})  -- Only select records that have been updated since the last run
-{% endif %}
+
+, final as (
+    select * from booking 
+    {% if is_incremental() %}
+    where booking_date > (select max(booking_date) from {{this}})
+    {% endif %}
+)
+
+
+select * , current_timestamp as updated_at 
+from final
 
 
